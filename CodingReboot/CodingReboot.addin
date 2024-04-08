@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+	<AddIn Type="Command">
+		<Text>CodingReboot - MOD0101</Text>
+		<Description>Some description for CodingReboot</Description>
+		<Assembly>CodingReboot.dll</Assembly>
+		<FullClassName>CodingReboot.MOD0101</FullClassName>
+		<ClientId>93F73818-D000-49D0-AEF7-609FD75513D8</ClientId>
+		<VendorId>com.YOUR COMPANY NAME</VendorId>
+		<VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
+		<Text>CodingReboot - MOD0101_FizzBuzz</Text>
+		<Description>Some description for CodingReboot</Description>
+		<Assembly>CodingReboot.dll</Assembly>
+		<FullClassName>CodingReboot.MOD0101_FizzBuzz</FullClassName>
+		<ClientId>A423093F-A4A6-4B31-ACED-A6815F94887E</ClientId>
+		<VendorId>com.YOUR COMPANY NAME</VendorId>
+		<VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
+		<Text>Run MOD01AddExcelSheets</Text>
+		<Description>Some description for CodingReboot</Description>
+		<Assembly>CodingReboot.dll</Assembly>
+		<FullClassName>CodingReboot.MOD01AddExcelSheets</FullClassName>
+		<ClientId>C53160D3-D1DF-477F-B33C-43A93433955B</ClientId>
+		<VendorId>com.YOUR COMPANY NAME</VendorId>
+		<VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
+		<Text>Run MOD01AddExcelSheetsEPPlus</Text>
+		<Description>Some description for CodingReboot</Description>
+		<Assembly>CodingReboot.dll</Assembly>
+		<FullClassName>CodingReboot.MOD01AddExcelSheetsEPPlus</FullClassName>
+		<ClientId>79C7AED0-2960-402A-B80B-15FACF3E2DF1</ClientId>
+		<VendorId>com.YOUR COMPANY NAME</VendorId>
+		<VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
+	</AddIn>
+  <AddIn Type="Application">
+    <Name>CodingReboot</Name>
+    <Assembly>CodingReboot.dll</Assembly>
+    <FullClassName>CodingReboot.App</FullClassName>
+    <ClientId>2EE0DC6A-AAE6-429C-B2AD-C849F10D5309</ClientId>
+    <VendorId>com.YOUR COMPANY NAME</VendorId>
+    <VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
+  </AddIn>
+</RevitAddIns>
