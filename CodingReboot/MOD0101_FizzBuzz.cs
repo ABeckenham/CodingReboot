@@ -70,7 +70,8 @@ namespace CodingReboot
             for (int i = 0; i <= numVariable; i++)
             {
                     Level newLevel = Level.Create(doc, eleStart);
-                    eleStart =+ flrHeight;
+                    eleStart = eleStart + flrHeight;
+                    newLevel.Name = "Level_" + i.ToString();
                     
                     if(i % 3 == 0) // if dvisible by 3 - create floor plan and name it FIZZ_
                     {
@@ -78,13 +79,13 @@ namespace CodingReboot
                         {
                             ViewPlan newfPlan = ViewPlan.Create(doc, VFTfloorplan.Id, newLevel.Id);
                             newfPlan.Name = "FIZZ_"+ i.ToString();
-                            planNumberCount =+1;
+                            planNumberCount = planNumberCount + 1;
                         }
                         else //divisable by 3 and 5 - create a sheet and name it FIZZBUZZ_
                         {
                             ViewSheet newsheet = ViewSheet.Create(doc, titleblockecollector.FirstElement().Id);
                             newsheet.Name = "FIZZBUZZ_" + i.ToString();
-                            sheetNumberCount =+1;
+                            sheetNumberCount = sheetNumberCount + 1;
                         }
                     }
                     else // if divisible by 5 - create a ceiling plan and Name it BUZZ_
@@ -93,7 +94,7 @@ namespace CodingReboot
                        {
                         ViewPlan newCPlan = ViewPlan.Create(doc, VFTceilingplan.Id, newLevel.Id);
                         newCPlan.Name = "BUZZ_" + i.ToString();
-                        ceilingNumberCount = +1;
+                        ceilingNumberCount = ceilingNumberCount + 1;
                        }
                        else continue;                         
                     }
