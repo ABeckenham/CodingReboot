@@ -196,6 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="MOD0102_HiddenMessage.cs" />
     <Compile Include="MOD0102.cs" />
     <Compile Include="MOD0101_FizzBuzz.cs" />
     <Compile Include="MOD02addElements.cs" />
