@@ -50,7 +50,7 @@ namespace CodingReboot
             foreach (Element elem in pickList)
             {
                 //CurveElement curveElem = elem as CurveElement;
-                CurveElement curveElem = (CurveElement) elem;
+                CurveElement curveElem = elem as CurveElement;
                 if(curveElem.CurveElementType == CurveElementType.ModelCurve)
                 {
                     modelCurves.Add(curveElem);
