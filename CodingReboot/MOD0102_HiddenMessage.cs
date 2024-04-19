@@ -30,6 +30,8 @@ namespace CodingReboot
 
             // Your code goes here
 
+
+
             //create user selection prompt
             UIDocument uidoc = uiapp.ActiveUIDocument;
             IList<Element> pickList = uidoc.Selection.PickElementsByRectangle("select Element");
@@ -58,21 +60,19 @@ namespace CodingReboot
                 }
             }
 
+            
             //select model curves by name
 
             // filtered elements collector for: level wall, pipe, and duct type, SYSTEM TYPE
             FilteredElementCollector levelcollect = new FilteredElementCollector(doc);
-            levelcollect.OfCategory(BuiltInCategory.OST_Levels);
-
-            
-            FilteredElementCollector wallType = new FilteredElementCollector(doc);
-            wallType.OfClass(typeof(WallType));
+            levelcollect.OfCategory(BuiltInCategory.OST_Levels);            
+           
 
             FilteredElementCollector DuctType = new FilteredElementCollector(doc);
-            wallType.OfClass(typeof(DuctType));
+            DuctType.OfClass(typeof(DuctType));
 
             FilteredElementCollector pipeType = new FilteredElementCollector(doc);
-            wallType.OfClass(typeof(PipeType));
+            pipeType.OfClass(typeof(PipeType));
 
             //Get system types for the pipe and ducting : "Domestic Hot Water", "Supply Air"
             FilteredElementCollector systemCollector = new FilteredElementCollector(doc);
@@ -98,58 +98,78 @@ namespace CodingReboot
             //    }                    
             //}
             //you are repeating yourself make a method.
-
+            //get mepsystem type 
             MEPSystemType syshotwater = GetMEPSystemType(doc, "Domestic Hot Water");
             MEPSystemType sysairsupply = GetMEPSystemType(doc, "Supply Air");
 
             //get current doc level 1 
-            Level selectLevel = null;
-            foreach (Level level in levelcollect)
+            //Level selectLevel = null;
+            //foreach (Level level in levelcollect)
+            //{
+            //    if(level.Name == "Level 1")
+            //    {
+            //        selectLevel = level;
+            //    }
+            //}
+
+            //make a method to collect the two wall types
+
+            WallType storeWall = GetWallTypeByName(doc, "Storefront");
+            WallType genWall = GetWallTypeByName(doc, @"Generic - 8""");        
+
+            //start the creation of elements
+
+            using (Transaction t = new Transaction(doc))
             {
-                if(level.Name == "Level 1")
+                t.Start("Create Revit Elements");
+
+                Level newLevel = Level.Create(doc, 10);
+
+                // switch 
+                foreach (CurveElement curCurve in modelCurves)
                 {
-                    selectLevel = level;
+                    
+                    //CurveElementType
+                    Curve curvve = curCurve.GeometryCurve;
+                    //need to deal with circles that dont have a start or end point
+                    if (curvve.IsBound == true)
+                    {
+                        XYZ startpoint = curvve.GetEndPoint(0);
+                        XYZ endpoint = curvve.GetEndPoint(1);
+
+                        GraphicsStyle curStyle = curCurve.LineStyle as GraphicsStyle;
+
+                        switch (curStyle.Name)
+                        {
+                            case "A-GLAZ":
+                                Wall.Create(doc, curvve, storeWall.Id, newLevel.Id, 10, 0, false, false);
+                                break;
+
+                            case "A-WALL":
+                                Wall.Create(doc, curvve, genWall.Id, newLevel.Id, 10, 0, false, false);
+                                break;
+
+                            case "M-DUCT":
+                                Duct.Create(doc, sysairsupply.Id, DuctType.FirstElementId(),
+                                    newLevel.Id, startpoint, endpoint);
+                                break;
+
+                            case "P-PIPE":
+                                Pipe.Create(doc, syshotwater.Id, pipeType.FirstElementId(),
+                                    newLevel.Id, startpoint, endpoint);
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                    }
+                    else continue;
                 }
+
+                t.Commit();
             }
-
-
-            // switch 
-            foreach (CurveElement curCurve in modelCurves)
-            {
-                Curve curvve = curCurve.GeometryCurve;
-                XYZ startpoint = curvve.GetEndPoint(0);
-                XYZ endpoint = curvve.GetEndPoint(1);
-
-                GraphicsStyle curStyle = curCurve.LineStyle as GraphicsStyle;
-
-                switch (curStyle.Name)
-                {
-                    case "A-GLAZ":
-                        Wall glazWall = Wall.Create(doc, curvve , selectLevel.Id, false);
-
-                        break;
-
-                    case "A-WALL":
-                        Wall newWall = Wall.Create(doc, curvve, selectLevel.Id, false);
-                        break;
-
-                    case "M-DUCT":
-                        Duct newduct = Duct.Create(doc, sysairsupply.Id, DuctType.FirstElementId(), 
-                            selectLevel.Id, startpoint, endpoint);
-                        break;
-
-                    case "P-PIPE":
-                        Pipe newpipe = Pipe.Create(doc, syshotwater.Id, pipeType.FirstElementId(), 
-                            selectLevel.Id, startpoint, endpoint);
-                        break;
-
-                    default:
-                        break;
-                }
-            }         
-
-            
-            //create methods for as much as possible
+                //create methods for as much as possible
             
 
             return Result.Succeeded;
@@ -172,6 +192,22 @@ namespace CodingReboot
             }    
             return null;            
         }
+
+        internal WallType GetWallTypeByName(Document doc, string name)
+        {
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            collector.OfClass(typeof(WallType));
+
+            foreach (WallType curType in collector)
+            {
+                if (curType.Name == name) 
+                {
+                    return curType;
+                }
+            }
+            return null;
+        }
+
         internal static PushButtonData GetButtonData()
         {
             // use this method to define the properties for this command in the Revit ribbon

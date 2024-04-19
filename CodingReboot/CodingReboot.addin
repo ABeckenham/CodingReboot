@@ -25,14 +25,14 @@
 		<FullClassName>CodingReboot.MOD0102</FullClassName>
 		<ClientId>EF2E51A7-DA83-4D03-AC0E-DB5D5DC56F41</ClientId>
 		<VendorId>com.YOUR COMPANY NAME</VendorId>
-		<VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
+		<VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>	
 	</AddIn>
 	<AddIn Type="Command">
 		<Text>CodingReboot - MOD0102_HiddenMessage</Text>
 		<Description>Some description for CodingReboot</Description>
 		<Assembly>CodingReboot.dll</Assembly>
 		<FullClassName>CodingReboot.MOD0102_HiddenMessage</FullClassName>
-		<ClientId>0196A502-87DB-40CA-8626-0AF82914C1E4</ClientId>
+		<ClientId>BFC59001-291B-4C7E-89E8-EC03959F8BC7</ClientId>
 		<VendorId>com.YOUR COMPANY NAME</VendorId>
 		<VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
 	</AddIn>
