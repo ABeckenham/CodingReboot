@@ -51,11 +51,8 @@ namespace CodingReboot
                     VFTfloorplan = curType;
                     break;
                 }
-            }
-
-            foreach (ViewFamilyType curType in viewtypecollector)
-            {
-                if (curType.ViewFamily == ViewFamily.CeilingPlan)
+            
+                else if (curType.ViewFamily == ViewFamily.CeilingPlan)
                 {
                     VFTceilingplan = curType;
                     break;
@@ -69,38 +66,68 @@ namespace CodingReboot
             //create a level
             for (int i = 0; i <= numVariable; i++)
             {
-                    Level newLevel = Level.Create(doc, eleStart);
-                    eleStart = eleStart + flrHeight;
-                    newLevel.Name = "Level_" + i.ToString();
-                    
-                    if(i % 3 == 0) // if dvisible by 3 - create floor plan and name it FIZZ_
-                    {
-                        if (i % 5 != 0) // if the number is divisible by both 3 and 5 
-                        {
-                            ViewPlan newfPlan = ViewPlan.Create(doc, VFTfloorplan.Id, newLevel.Id);
-                            newfPlan.Name = "FIZZ_"+ i.ToString();
-                            planNumberCount = planNumberCount + 1;
-                        }
-                        else //divisable by 3 and 5 - create a sheet and name it FIZZBUZZ_
-                        {
-                            ViewSheet newsheet = ViewSheet.Create(doc, titleblockecollector.FirstElement().Id);
-                            newsheet.Name = "FIZZBUZZ_" + i.ToString();
-                            sheetNumberCount = sheetNumberCount + 1;
-                        }
-                    }
-                    else // if divisible by 5 - create a ceiling plan and Name it BUZZ_
-                    { 
-                       if(i % 5 == 0)
-                       {
-                        ViewPlan newCPlan = ViewPlan.Create(doc, VFTceilingplan.Id, newLevel.Id);
-                        newCPlan.Name = "BUZZ_" + i.ToString();
-                        ceilingNumberCount = ceilingNumberCount + 1;
-                       }
-                       else continue;                         
-                    }
-                    
-            }
+                Level newLevel = Level.Create(doc, eleStart);
+                eleStart = eleStart + flrHeight;
+                newLevel.Name = "Level_" + i.ToString();
 
+                //if(i % 3 == 0) // if dvisible by 3 - create floor plan and name it FIZZ_
+                //{
+                //    if (i % 5 != 0) // if the number is divisible by both 3 and 5 
+                //    {
+                //        ViewPlan newfPlan = ViewPlan.Create(doc, VFTfloorplan.Id, newLevel.Id);
+                //        newfPlan.Name = "FIZZ_"+ i.ToString();
+                //        planNumberCount = planNumberCount + 1;
+                //    }
+                //    else //divisable by 3 and 5 - create a sheet and name it FIZZBUZZ_
+                //    {
+                //        ViewSheet newsheet = ViewSheet.Create(doc, titleblockecollector.FirstElement().Id);
+                //        newsheet.Name = "FIZZBUZZ_" + i.ToString();
+                //        sheetNumberCount = sheetNumberCount + 1;
+                //    }
+                //}
+                //else // if divisible by 5 - create a ceiling plan and Name it BUZZ_
+                //{ 
+                //   if(i % 5 == 0)
+                //   {
+                //    ViewPlan newCPlan = ViewPlan.Create(doc, VFTceilingplan.Id, newLevel.Id);
+                //    newCPlan.Name = "BUZZ_" + i.ToString();
+                //    ceilingNumberCount = ceilingNumberCount + 1;
+                //   }
+                //   else continue;                         
+                //}
+
+                if (i % 3 == 0 && i % 5 == 0) // if dvisible by 3 - create floor plan and name it FIZZ_
+                {
+                    ViewSheet newsheet = ViewSheet.Create(doc, titleblockecollector.FirstElement().Id);
+                    newsheet.Name = "FIZZBUZZ_" + i.ToString();
+                    sheetNumberCount = sheetNumberCount + 1;
+
+                    //bonus
+                    ViewPlan floorplan = ViewPlan.Create(doc, VFTfloorplan.Id, newLevel.Id);
+                    XYZ point = new XYZ(1,0.5,0);
+                    Viewport vp = Viewport.Create(doc, newsheet.Id, floorplan.Id, point);
+
+                }
+                else if(i % 3 == 0)
+                {
+                    ViewPlan newfPlan = ViewPlan.Create(doc, VFTfloorplan.Id, newLevel.Id);
+                    newfPlan.Name = "FIZZ_" + i.ToString();
+                    planNumberCount = planNumberCount + 1;
+
+                    
+                }
+                
+                else if (i % 5 == 0)
+                {
+                    ViewPlan newCPlan = ViewPlan.Create(doc, VFTceilingplan.Id, newLevel.Id);
+                    newCPlan.Name = "BUZZ_" + i.ToString();
+                    ceilingNumberCount = ceilingNumberCount + 1;
+                }
+                
+                else continue;
+
+                
+            }
 
 
             TaskDialog.Show("Total Created Elements", ("Total Number of plans: " + planNumberCount) +
