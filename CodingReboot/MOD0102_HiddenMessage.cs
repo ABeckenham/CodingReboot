@@ -127,8 +127,7 @@ namespace CodingReboot
 
                 // switch 
                 foreach (CurveElement curCurve in modelCurves)
-                {
-                    
+                {                    
                     //CurveElementType
                     Curve curvve = curCurve.GeometryCurve;
                     //need to deal with circles that dont have a start or end point
