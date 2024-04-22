@@ -49,13 +49,13 @@ namespace CodingReboot
                 if (curType.ViewFamily == ViewFamily.FloorPlan)
                 {
                     VFTfloorplan = curType;
-                    break;
+                    
                 }
             
                 else if (curType.ViewFamily == ViewFamily.CeilingPlan)
                 {
                     VFTceilingplan = curType;
-                    break;
+                    
                 }
             }
 

@@ -34,7 +34,9 @@ namespace CodingReboot
 
             //create user selection prompt
             UIDocument uidoc = uiapp.ActiveUIDocument;
+            TaskDialog.Show("Select Lines", "Select some lines to convert to Revit Elements");
             IList<Element> pickList = uidoc.Selection.PickElementsByRectangle("select Element");
+            
 
             //Cast the element list to curve elements
 
@@ -53,16 +55,20 @@ namespace CodingReboot
             List<CurveElement> modelCurves = new List<CurveElement>();
             foreach (Element elem in pickList)
             {
-                CurveElement curveElem = elem as CurveElement;
-                if (curveElem.CurveElementType == CurveElementType.ModelCurve)
+                if (elem is CurveElement)
                 {
-                    modelCurves.Add(curveElem);
+                    CurveElement curveElem = elem as CurveElement;
+
+                    if (curveElem.CurveElementType == CurveElementType.ModelCurve)
+                    {
+                        modelCurves.Add(curveElem);
+                    }
                 }
             }
 
+            TaskDialog.Show("Curves", $"you selected {modelCurves.Count} lines.");
             
             //select model curves by name
-
             // filtered elements collector for: level wall, pipe, and duct type, SYSTEM TYPE
             FilteredElementCollector levelcollect = new FilteredElementCollector(doc);
             levelcollect.OfCategory(BuiltInCategory.OST_Levels);            
@@ -117,6 +123,8 @@ namespace CodingReboot
             WallType storeWall = GetWallTypeByName(doc, "Storefront");
             WallType genWall = GetWallTypeByName(doc, @"Generic - 8""");        
 
+            List<ElementId> linestohide = new List<ElementId>();
+
             //start the creation of elements
 
             using (Transaction t = new Transaction(doc))
@@ -159,12 +167,20 @@ namespace CodingReboot
                                 break;
 
                             default:
+                                linestohide.Add(curCurve.Id);
                                 break;
                         }
 
                     }
-                    else continue;
+                    else
+                    {
+                        linestohide.Add(curCurve.Id);
+                        continue;
+                    }
+                        
                 }
+
+                doc.ActiveView.HideElements(linestohide);
 
                 t.Commit();
             }

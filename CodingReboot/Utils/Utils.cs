@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CodingReboot
 {
@@ -28,6 +29,36 @@ namespace CodingReboot
                     return tmpPanel;
             }
 
+            return null;
+        }
+
+        internal static Level GetLevelByName(Document doc, string levelName)
+        {
+            FilteredElementCollector Collector = new FilteredElementCollector(doc);
+            Collector.OfClass(typeof(Level));Collector.WhereElementIsElementType();
+
+            foreach (Level curlevel in Collector)
+            {
+                if(curlevel.Name == levelName)
+                {
+                    return curlevel;                                               
+                }                
+            }
+            return null;
+        }
+
+        internal static Element GetWallTypeByName(Document doc, string typeName)
+        {
+            FilteredElementCollector Collector = new FilteredElementCollector(doc);
+            Collector.OfClass(typeof(WallType));
+
+            foreach (Element curWall in Collector)
+            {
+                if (curWall.Name == typeName)
+                {
+                    return curWall;
+                }
+            }
             return null;
         }
     }
