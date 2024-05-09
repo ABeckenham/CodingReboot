@@ -19,6 +19,24 @@
 		<VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
 	</AddIn>
 	<AddIn Type="Command">
+		<Text>CodingReboot - MOD0103</Text>
+		<Description>Some description for CodingReboot</Description>
+		<Assembly>CodingReboot.dll</Assembly>
+		<FullClassName>CodingReboot.MOD0103</FullClassName>
+		<ClientId>BA4CDE5D-8151-4FB7-85F4-FF49CE83976B</ClientId>
+		<VendorId>com.YOUR COMPANY NAME</VendorId>
+		<VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
+		<Text>CodingReboot - MOD0103_MovingDay</Text>
+		<Description>Some description for CodingReboot</Description>
+		<Assembly>CodingReboot.dll</Assembly>
+		<FullClassName>CodingReboot.MOD0103_MovingDay</FullClassName>5
+		<ClientId>0CDA460A-DA3B-4E2B-860B-DA75C68187DC</ClientId>
+		<VendorId>com.YOUR COMPANY NAME</VendorId>
+		<VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
 		<Text>CodingReboot - MOD0102</Text>
 		<Description>Some description for CodingReboot</Description>
 		<Assembly>CodingReboot.dll</Assembly>

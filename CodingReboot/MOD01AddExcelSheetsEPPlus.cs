@@ -59,6 +59,7 @@ namespace CodingReboot
             int cols = worksheet.Dimension.Columns;
 
             // read excel data into a list
+            //////////////////////////////////////////
             //nested list, could also use an array
             List<List<string>> excelData = new List<List<string>>();
 
@@ -75,9 +76,7 @@ namespace CodingReboot
                     rowData.Add(cellContent);
                 }
                 excelData.Add(rowData);
-            }
-
-            
+            }           
 
 
             //write to excel - write a list of the drawings that have been made in Revit, and the file name 

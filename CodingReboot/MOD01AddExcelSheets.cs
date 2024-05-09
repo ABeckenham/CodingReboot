@@ -88,6 +88,7 @@ namespace CodingReboot
                     //string nameData = Convert.ToString(worksheet.Cells[i, 10].Value);
                     rowData.Add(ColData);
                 }
+                excelData.Add(rowData);
             }
 
             //List<string> funcData = excelData[*:6];

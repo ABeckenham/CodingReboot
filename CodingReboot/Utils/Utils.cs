@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.UI;
 using System;
 using System.Collections.Generic;
@@ -61,5 +62,69 @@ namespace CodingReboot
             }
             return null;
         }
+        internal static string GetParameterValueAsString(Element element, string paramName)
+        {
+            IList<Parameter> paramList = element.GetParameters(paramName);
+            Parameter myParam = paramList.First();
+
+            return myParam.AsString();
+        }
+
+        internal static double GetParameterValueAsDouble(Element element, string paramName)
+        {
+            IList<Parameter> paramList = element.GetParameters(paramName);
+            Parameter Param = paramList.First();
+
+            return Param.AsDouble();
+        }
+
+        internal static void SetParameterValue(Element element, string paramName, string value)
+        {
+            IList<Parameter> paramList = element.GetParameters(paramName);
+            Parameter Param = paramList.First();
+
+            Param.Set(value);
+        }
+
+        internal static void SetParameterValue(Element element, string paramName, double value)
+        {
+            IList<Parameter> paramList = element.GetParameters(paramName);
+            Parameter Param = paramList.First();
+
+            Param.Set(value);
+        }
+
+        internal static void SetParameterValue(Element element, string paramName, int value)
+        {
+            IList<Parameter> paramList = element.GetParameters(paramName);
+            Parameter Param = paramList.First();
+
+            Param.Set(value);
+        }
+
+
+        internal static FamilySymbol GetFamilySymbolByName(Document doc, string famName, string fsName)
+        {//equlivant of a family type
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            collector.OfClass(typeof(FamilySymbol));
+
+            foreach (FamilySymbol fs in collector)
+            {
+                if (fs.Name == fsName && fs.FamilyName == famName)
+                    return fs;
+            }
+            return null;
+        }
+
+        internal static FilteredElementCollector GetAllRooms(Document doc) 
+        {
+            FilteredElementCollector RoomCollector = new FilteredElementCollector(doc);
+            RoomCollector.OfCategory(BuiltInCategory.OST_Rooms);
+
+            return RoomCollector;
+        }
+
+        
+
     }
 }
