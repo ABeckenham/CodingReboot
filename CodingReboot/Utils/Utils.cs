@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace CodingReboot
@@ -36,14 +37,14 @@ namespace CodingReboot
         internal static Level GetLevelByName(Document doc, string levelName)
         {
             FilteredElementCollector Collector = new FilteredElementCollector(doc);
-            Collector.OfClass(typeof(Level));Collector.WhereElementIsElementType();
+            Collector.OfClass(typeof(Level)); Collector.WhereElementIsElementType();
 
             foreach (Level curlevel in Collector)
             {
-                if(curlevel.Name == levelName)
+                if (curlevel.Name == levelName)
                 {
-                    return curlevel;                                               
-                }                
+                    return curlevel;
+                }
             }
             return null;
         }
@@ -116,15 +117,13 @@ namespace CodingReboot
             return null;
         }
 
-        internal static FilteredElementCollector GetAllRooms(Document doc) 
+        internal static FilteredElementCollector GetAllRooms(Document doc)
         {
             FilteredElementCollector RoomCollector = new FilteredElementCollector(doc);
             RoomCollector.OfCategory(BuiltInCategory.OST_Rooms);
 
             return RoomCollector;
-        }
-
-        
+        }        
 
     }
 }

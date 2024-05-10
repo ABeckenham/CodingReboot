@@ -196,12 +196,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="MOD0201_Schedules.cs" />
+    <Compile Include="MOD0201.cs" />
     <Compile Include="MOD0103_MovingDay.cs" />
     <Compile Include="MOD0103.cs" />
     <Compile Include="MOD0102_HiddenMessage.cs" />
     <Compile Include="MOD0102.cs" />
     <Compile Include="MOD0101_FizzBuzz.cs" />
-    <Compile Include="MOD02addElements.cs" />
+    <Compile Include="MOD0102addElements.cs" />
     <Compile Include="Command1.cs" />
     <Compile Include="MOD01AddExcelSheetsEPPlus.cs" />
     <Compile Include="MOD01AddExcelSheets.cs" />
@@ -235,6 +237,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CodingReboot.addin" />
+    <EmbeddedResource Include="Resources\icons8-drink-pulsar-color-1696.png" />
+    <EmbeddedResource Include="Resources\icons8-drink-pulsar-color-3296.png" />
+    <EmbeddedResource Include="Resources\icons8-invisible-pulsar-color-1696.png" />
+    <EmbeddedResource Include="Resources\icons8-invisible-pulsar-color-3296.png" />
+    <EmbeddedResource Include="Resources\icons8-in-transit-pulsar-color-1696.png" />
+    <EmbeddedResource Include="Resources\icons8-in-transit-pulsar-color-3296.png" />
+    <EmbeddedResource Include="Resources\icons8-year-view-pulsar-color-3296.png" />
+    <EmbeddedResource Include="Resources\icons8-year-view-pulsar-color-1696.png" />
+    <EmbeddedResource Include="Resources\icons8-insert-page-pulsar-color-3296.png" />
+    <EmbeddedResource Include="Resources\icons8-insert-page-pulsar-color-1696.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">

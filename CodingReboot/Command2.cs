@@ -33,7 +33,7 @@ namespace CodingReboot
         {
             // use this method to define the properties for this command in the Revit ribbon
             string buttonInternalName = "btnCommand2";
-            string buttonTitle = "Button 2";
+            string buttonTitle = "Command 2";
 
             ButtonDataClass myButtonData1 = new ButtonDataClass(
                 buttonInternalName,

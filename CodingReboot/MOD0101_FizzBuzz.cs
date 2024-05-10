@@ -142,8 +142,8 @@ namespace CodingReboot
         internal static PushButtonData GetButtonData()
         {
             // use this method to define the properties for this command in the Revit ribbon
-            string buttonInternalName = "btnCommand2";
-            string buttonTitle = "Button 2";
+            string buttonInternalName = "MOD0101_FizzBuzz";
+            string buttonTitle = "FizzBuzz";
 
             ButtonDataClass myButtonData1 = new ButtonDataClass(
                 buttonInternalName,
@@ -151,7 +151,7 @@ namespace CodingReboot
                 MethodBase.GetCurrentMethod().DeclaringType?.FullName,
                 Properties.Resources.Blue_32,
                 Properties.Resources.Blue_16,
-                "This is a tooltip for Button 2");
+                "This is a tooltip for FizzBuzz");
 
             return myButtonData1.Data;
         }

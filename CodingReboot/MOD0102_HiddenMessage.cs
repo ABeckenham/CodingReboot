@@ -226,16 +226,16 @@ namespace CodingReboot
         internal static PushButtonData GetButtonData()
         {
             // use this method to define the properties for this command in the Revit ribbon
-            string buttonInternalName = "btnCommand2";
-            string buttonTitle = "Button 2";
+            string buttonInternalName = "MOD0102_HiddenMessage";
+            string buttonTitle = "Hidden Message";
 
             ButtonDataClass myButtonData1 = new ButtonDataClass(
                 buttonInternalName,
                 buttonTitle,
                 MethodBase.GetCurrentMethod().DeclaringType?.FullName,
-                Properties.Resources.Blue_32,
-                Properties.Resources.Blue_16,
-                "This is a tooltip for Button 2");
+                Properties.Resources.icons8_invisible_pulsar_color_3296,
+                Properties.Resources.icons8_invisible_pulsar_color_1696,
+                "This is a tooltip for Hidden Message");
 
             return myButtonData1.Data;
         }

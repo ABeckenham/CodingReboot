@@ -21,8 +21,10 @@ namespace CodingReboot
             Data.ToolTip = toolTip;
 
             Data.LargeImage = BitmapToImageSource(largeImage);
+            //32x32 pixels, 96dpi
 
             Data.Image = BitmapToImageSource(smallImage);
+            //16x16 pixels, 96dpi
 
             // set command availability
             Data.AvailabilityClassName = "CodingReboot.CommandAvailability";
