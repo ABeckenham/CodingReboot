@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using System.Linq; 
+
 
 #endregion
 
@@ -32,7 +34,7 @@ namespace CodingReboot
 
                 // create a schedule of Rooms
 
-                //get all the rooms to find all departs of the rooms 
+                //get all the rooms to find all departments 
                 FilteredElementCollector allRooms = Utils.GetAllRooms(doc);
 
                 //Get all department names as list 
@@ -42,7 +44,8 @@ namespace CodingReboot
                     string curDept = Utils.GetParameterValueAsString(curRoom, "Department");
                     roomDeptList.Add(curDept);
                 }
-                              
+                
+                List<string> unqiueDeptList = roomDeptList.Distinct().ToList();
 
                 //get all room parameters needed : Name, number, department, comments, area, level
                 Element roomInst = allRooms.FirstElement();                
@@ -51,10 +54,23 @@ namespace CodingReboot
                 Parameter roomDeptParam = roomInst.get_Parameter(BuiltInParameter.ROOM_DEPARTMENT);
                 Parameter roomCommParam = roomInst.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS);
                 Parameter roomAreaParam = roomInst.get_Parameter(BuiltInParameter.ROOM_AREA);
-                Parameter roomLevelParam = roomInst.get_Parameter(BuiltInParameter.LEVEL_NAME);
-                                   
+                Parameter roomLevelParam = roomInst.LookupParameter("Level");
+
+                //create bonus all depts schedule 
+                ViewSchedule deptschedule = ViewSchedule.CreateSchedule(doc, roomInst.Category.Id);
+                deptschedule.Name = "All Departments";
+                ScheduleField deptName = deptschedule.Definition.AddField(ScheduleFieldType.Instance, roomDeptParam.Id);
+                ScheduleField deptArea = deptschedule.Definition.AddField(ScheduleFieldType.ViewBased,roomAreaParam.Id);
+                deptArea.DisplayType = ScheduleFieldDisplayType.Totals;
+                deptschedule.Definition.IsItemized = false;
+                //deptschedule.Definition.ShowGrandTotalTitle = true;
+                deptschedule.Definition.ShowGrandTotal = true;
+                ScheduleSortGroupField sortbydeptName = new ScheduleSortGroupField(deptName.FieldId);
+                deptschedule.Definition.AddSortGroupField(sortbydeptName);
+                
+
                 //create schedule for rooms
-                foreach(string curString in roomDeptList)
+                foreach (string curString in unqiueDeptList)
                 {
                     ElementId catId = new ElementId(BuiltInCategory.OST_Rooms);
                     ViewSchedule newschedule = ViewSchedule.CreateSchedule(doc, catId);
@@ -65,12 +81,17 @@ namespace CodingReboot
                     ScheduleField roomNameField = newschedule.Definition.AddField(ScheduleFieldType.Instance, roomNameParam.Id);
                     ScheduleField roomDeptField = newschedule.Definition.AddField(ScheduleFieldType.Instance, roomDeptParam.Id);
                     ScheduleField roomCommField = newschedule.Definition.AddField(ScheduleFieldType.Instance, roomCommParam.Id);
-                    ScheduleField roomAreaField = newschedule.Definition.AddField(ScheduleFieldType.Instance, roomAreaParam.Id);
+                    ScheduleField roomAreaField = newschedule.Definition.AddField(ScheduleFieldType.ViewBased, roomAreaParam.Id);
                     ScheduleField roomLevelField = newschedule.Definition.AddField(ScheduleFieldType.Instance, roomLevelParam.Id);
+
+                    //03. filter by department
+                    
+                    ScheduleFilter deptFilter = new ScheduleFilter(roomDeptField.FieldId, ScheduleFilterType.Equal, curString);
+                    newschedule.Definition.AddFilter(deptFilter);
+
 
                     //set displays
                     roomLevelField.IsHidden = true;
-                    roomLevelField.DisplayType = ScheduleFieldDisplayType.Totals;
                     roomAreaField.DisplayType = ScheduleFieldDisplayType.Totals;
 
                     // 05.set totals
@@ -80,10 +101,12 @@ namespace CodingReboot
 
                     //grouping
                     ScheduleSortGroupField sortbyRoomName = new ScheduleSortGroupField(roomNameField.FieldId);
-
-                }
-
-                
+                    ScheduleSortGroupField groupbyLevelName = new ScheduleSortGroupField(roomLevelField.FieldId);
+                    groupbyLevelName.ShowHeader = true;
+                    groupbyLevelName.ShowFooter = true;
+                    newschedule.Definition.AddSortGroupField(groupbyLevelName);
+                    newschedule.Definition.AddSortGroupField(sortbyRoomName);
+                }                
 
                 t.Commit();
 

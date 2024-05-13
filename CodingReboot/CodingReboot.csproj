@@ -133,12 +133,14 @@
     <Reference Include="PresentationFramework" />
     <!-- REVIT 2024 -->
     <Reference Include="RevitAPI" Condition="'$(Configuration)' == '2024Debug' or '$(Configuration)' == '2024Release'">
-      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2024\RevitAPI.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPI.dll</HintPath>
+      <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="RevitAPIUI" Condition="'$(Configuration)' == '2024Debug' or '$(Configuration)' == '2024Release'">
-      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2024\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPIUI.dll</HintPath>
+      <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <!-- REVIT 2023 -->
     <Reference Include="RevitAPI" Condition="'$(Configuration)' == '2023Debug' or '$(Configuration)' == '2023Release'">
@@ -237,6 +239,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CodingReboot.addin" />
+    <EmbeddedResource Include="Resources\icons8-sheets-pulsar-color-3296.png" />
+    <EmbeddedResource Include="Resources\icons8-sheets-pulsar-color-1696.png" />
     <EmbeddedResource Include="Resources\icons8-drink-pulsar-color-1696.png" />
     <EmbeddedResource Include="Resources\icons8-drink-pulsar-color-3296.png" />
     <EmbeddedResource Include="Resources\icons8-invisible-pulsar-color-1696.png" />

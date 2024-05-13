@@ -29,7 +29,9 @@ namespace CodingReboot
             }
 
             // 2. Create ribbon panel 
-            RibbonPanel panel = Utils.CreateRibbonPanel(app, tabName, "Tools");
+            RibbonPanel panelmod1 = Utils.CreateRibbonPanel(app, tabName, "MOD01");
+            RibbonPanel panelmod2 = Utils.CreateRibbonPanel(app, tabName, "MOD02");
+            RibbonPanel panelRidge = Utils.CreateRibbonPanel(app, tabName, "Ridge");
 
             // 3. Create button data instances
             //PushButtonData btnData1 = Command1.GetButtonData();
@@ -44,11 +46,11 @@ namespace CodingReboot
             // 4. Create buttons
             //PushButton myButton1 = panel.AddItem(btnData1) as PushButton;
             //PushButton myButton2 = panel.AddItem(btnData2) as PushButton;
-            PushButton myButton3 = panel.AddItem(MOD0101) as PushButton;
-           // PushButton myButton4 = panel.AddItem(MOD0102) as PushButton;
-            //PushButton myButton5 = panel.AddItem(MOD0103) as PushButton;
-            PushButton myButton6 = panel.AddItem(MOD01addexcel) as PushButton;
-            PushButton myButton7 = panel.AddItem(MOD0201Schedules) as PushButton;
+            PushButton myButton3 = panelmod1.AddItem(MOD0101) as PushButton;
+            PushButton myButton4 = panelmod1.AddItem(MOD0102) as PushButton;
+            PushButton myButton5 = panelmod1.AddItem(MOD0103) as PushButton;
+            PushButton myButton6 = panelRidge.AddItem(MOD01addexcel) as PushButton;
+            PushButton myButton7 = panelmod2.AddItem(MOD0201Schedules) as PushButton;
             //PushButton myButton7 = panel.AddItem(MOD01addexcel) as PushButton;
 
 
@@ -59,12 +61,12 @@ namespace CodingReboot
             //splitbutton.AddPushButton(btnData2);
 
             //6. create pulldown button
-            PulldownButtonData pullbuttondata = new PulldownButtonData("pulldown1", "Pull Down");
-            pullbuttondata.LargeImage = ButtonDataClass.BitmapToImageSource(Properties.Resources.Red_32);
-            pullbuttondata.Image = ButtonDataClass.BitmapToImageSource(Properties.Resources.Red_16);
-            PulldownButton pulldownbutton = panel.AddItem(pullbuttondata) as PulldownButton;
-            pulldownbutton.AddPushButton(MOD0103);
-            pulldownbutton.AddPushButton(MOD0102);
+            //PulldownButtonData pullbuttondata = new PulldownButtonData("pulldown1", "Pull Down");
+            //pullbuttondata.LargeImage = ButtonDataClass.BitmapToImageSource(Properties.Resources.Red_32);
+            //pullbuttondata.Image = ButtonDataClass.BitmapToImageSource(Properties.Resources.Red_16);
+            //PulldownButton pulldownbutton = panelmod1.AddItem(pullbuttondata) as PulldownButton;
+            //pulldownbutton.AddPushButton(MOD0103);
+            //pulldownbutton.AddPushButton(MOD0102);
 
             //7. stacked buttons (vertically stacked) 
             //panel.AddStackedItems(MOD01addexcel, MOD01addexcel2);

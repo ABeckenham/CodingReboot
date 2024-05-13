@@ -149,8 +149,8 @@ namespace CodingReboot
                 buttonInternalName,
                 buttonTitle,
                 MethodBase.GetCurrentMethod().DeclaringType?.FullName,
-                Properties.Resources.Blue_32,
-                Properties.Resources.Blue_16,
+                Properties.Resources.icons8_sheets_pulsar_color_3296,
+                Properties.Resources.icons8_sheets_pulsar_color_1696,
                 "This is a tooltip for FizzBuzz");
 
             return myButtonData1.Data;
