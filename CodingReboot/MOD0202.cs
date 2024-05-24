@@ -35,6 +35,7 @@ namespace CodingReboot
             List<BuiltInCategory> catList = new List<BuiltInCategory>();
             catList.Add(BuiltInCategory.OST_Rooms);
             catList.Add(BuiltInCategory.OST_Doors);
+            catList.Add(BuiltInCategory.OST_Walls);
 
             ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catList);
 
@@ -43,13 +44,19 @@ namespace CodingReboot
             //LINQ
             FamilySymbol curDoorTag = new FilteredElementCollector(doc)
                 .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
-                .Where(x => x.FamilyName.Equals("Door Tag"))
+                .Where(x => x.FamilyName.Equals("M_Door Tag"))
                 .First();
 
             FamilySymbol curRoomTag = new FilteredElementCollector(doc)
                 .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
-                .Where(x => x.FamilyName.Equals("Room Tag"))
+                .Where(x => x.FamilyName.Equals("M_Room Tag"))
                 .First();
+
+            FamilySymbol curWallTag = new FilteredElementCollector(doc)
+                .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
+                .Where(x => x.FamilyName.Equals("M_Wall Tag"))
+                .First();
+
 
 
             //Dictionaries
@@ -57,6 +64,7 @@ namespace CodingReboot
             Dictionary<string, FamilySymbol> tags = new Dictionary<string, FamilySymbol>();
             tags.Add("Doors", curDoorTag);
             tags.Add("Rooms", curRoomTag);
+            tags.Add("Walls", curWallTag);
 
 
             //why use one? Fast, no loops, very efficient 
@@ -71,7 +79,7 @@ namespace CodingReboot
                     LocationCurve locCurve;
 
                     Location curLoc = curElem.Location;
-                    if (curLoc != null)
+                    if (curLoc == null)
                         continue;
 
                     locPoint = curLoc as LocationPoint;
@@ -95,12 +103,11 @@ namespace CodingReboot
                     FamilySymbol curTagType = tags[curElem.Category.Name];
 
                     //5a. place tag
-                    IndependentTag newTag = IndependentTag.Create(doc, curTagType.Id, curView.Id, curRef, false,
-                        TagOrientation.Horizontal, insPoint);
-
-                    t.Commit();
+                    IndependentTag newTag = IndependentTag.Create(doc, curTagType.Id, curView.Id, 
+                        curRef, false,TagOrientation.Horizontal, insPoint);
+                    
                 }
-
+                t.Commit();
             }
 
             return Result.Succeeded;
@@ -111,15 +118,15 @@ namespace CodingReboot
         internal static PushButtonData GetButtonData()
         {
             // use this method to define the properties for this command in the Revit ribbon
-            string buttonInternalName = "btnCommand1";
-            string buttonTitle = "Command 1";
+            string buttonInternalName = "MOD0202";
+            string buttonTitle = "MOD0202";
 
             ButtonDataClass myButtonData1 = new ButtonDataClass(
                 buttonInternalName,
                 buttonTitle,
                 MethodBase.GetCurrentMethod().DeclaringType?.FullName,
-                Properties.Resources.Blue_32,
-                Properties.Resources.Blue_16,
+                Properties.Resources.icons8_tag_pulsar_color_3296,
+                Properties.Resources.icons8_tag_pulsar_color_1696,
                 "This is a tooltip for Button 2");
 
             return myButtonData1.Data;
