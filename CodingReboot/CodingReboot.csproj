@@ -198,6 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="MOD0202.cs" />
     <Compile Include="MOD0201_Schedules.cs" />
     <Compile Include="MOD0201.cs" />
     <Compile Include="MOD0103_MovingDay.cs" />

@@ -63,6 +63,8 @@ namespace CodingReboot
             }
             return null;
         }
+
+
         internal static string GetParameterValueAsString(Element element, string paramName)
         {
             IList<Parameter> paramList = element.GetParameters(paramName);
@@ -123,7 +125,16 @@ namespace CodingReboot
             RoomCollector.OfCategory(BuiltInCategory.OST_Rooms);
 
             return RoomCollector;
-        }        
+        }
+
+        internal static XYZ GetMidpointBetweenTwoPoints(XYZ point1, XYZ point2)
+        {
+            XYZ midPoint = new XYZ(
+                (point1.X + point2.X) / 2,
+                (point1.Y + point2.Y) / 2,
+                (point1.Z + point2.Z) / 2);
+            return midPoint;
+        }
 
     }
 }
