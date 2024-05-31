@@ -36,6 +36,7 @@ namespace CodingReboot
             catList.Add(BuiltInCategory.OST_Rooms);
             catList.Add(BuiltInCategory.OST_Doors);
             catList.Add(BuiltInCategory.OST_Walls);
+            catList.Add(BuiltInCategory.OST_Areas);  
 
             ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catList);
 
@@ -83,6 +84,7 @@ namespace CodingReboot
                         continue;
 
                     locPoint = curLoc as LocationPoint;
+
                     if (locPoint != null)
                     {
                         //is a location point
@@ -97,7 +99,42 @@ namespace CodingReboot
                         insPoint = Utils.GetMidpointBetweenTwoPoints(curCurve.GetEndPoint(0), curCurve.GetEndPoint(1));
                     }
 
+                    //6. check wall type
+                    if (curElem.Category.Name == "Walls")
+                    {
+                        Wall curWall = curElem as Wall;
+                        WallType curWallType = curWall.WallType;
+                        if (curWallType.Kind == WallKind.Curtain)
+                        {
+                            TaskDialog.Show("Test", "Found a curtain wall!");
+                        }
+                    }
 
+                    ViewType curViewType = curView.ViewType;
+                    if (curViewType == ViewType.AreaPlan) 
+                    {
+                        TaskDialog.Show("Test", "This is an area plan wall!");
+                    }
+
+
+
+                    //5b. place area tag
+                    if (curElem.Category.Name == "Areas")
+                    {
+                        ViewPlan curAreaPlan = curView as ViewPlan;
+                        Area curArea = curElem as Area;
+                        //if (curAreaPlan != null) 
+                        //{                          
+                        //    continue;
+                        //}
+                        AreaTag curAreaTag = doc.Create.NewAreaTag(curAreaPlan, curArea, new UV(insPoint.X, insPoint.Y));
+                        curAreaTag.TagHeadPosition = new XYZ(insPoint.X, insPoint.Y, 0 );
+                        curAreaTag.HasLeader = false;
+
+                    }
+                    else
+                    {                    
+                    
                     // 4. create reference to element 
                     Reference curRef = new Reference(curElem);
                     FamilySymbol curTagType = tags[curElem.Category.Name];
@@ -105,7 +142,7 @@ namespace CodingReboot
                     //5a. place tag
                     IndependentTag newTag = IndependentTag.Create(doc, curTagType.Id, curView.Id, 
                         curRef, false,TagOrientation.Horizontal, insPoint);
-                    
+                    }
                 }
                 t.Commit();
             }
