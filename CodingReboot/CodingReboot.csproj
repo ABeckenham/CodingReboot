@@ -198,6 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="MOD0202_TagTool.cs" />
     <Compile Include="MOD0202.cs" />
     <Compile Include="MOD0201_Schedules.cs" />
     <Compile Include="MOD0201.cs" />
@@ -240,6 +241,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CodingReboot.addin" />
+    <EmbeddedResource Include="Resources\icons8-badge-pulsar-color-3296.png" />
+    <EmbeddedResource Include="Resources\icons8-badge-pulsar-color-1696.png" />
     <EmbeddedResource Include="Resources\icons8-sheets-pulsar-color-3296.png" />
     <EmbeddedResource Include="Resources\icons8-sheets-pulsar-color-1696.png" />
     <EmbeddedResource Include="Resources\icons8-drink-pulsar-color-1696.png" />

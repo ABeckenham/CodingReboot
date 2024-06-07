@@ -136,5 +136,44 @@ namespace CodingReboot
             return midPoint;
         }
 
+        internal static FamilySymbol GetTagbyName(Document doc, string tagName)
+        {
+            FamilySymbol curTag = new FilteredElementCollector(doc)
+                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
+                            .Where(x => x.FamilyName.Equals(tagName))
+                            .First();
+
+            return curTag;
+        }
+
+
+        internal static XYZ GetTagLocationPoint(Element curElem)
+        {
+            XYZ insPoint;
+            LocationPoint locPoint;
+            LocationCurve locCurve;
+
+            //get the location
+            Location curLoc = curElem.Location;
+            if (curLoc == null)
+                return null;
+            else
+            {
+                locPoint = curLoc as LocationPoint;
+                if (locPoint != null)
+                {
+                    insPoint = locPoint.Point;
+                }
+                else
+                {
+                    locCurve = curLoc as LocationCurve;
+                    Curve curCurve = locCurve.Curve;
+                    insPoint = Utils.GetMidpointBetweenTwoPoints(curCurve.GetEndPoint(0), curCurve.GetEndPoint(1));
+                }
+            }
+
+            return insPoint;
+        }
+
     }
 }

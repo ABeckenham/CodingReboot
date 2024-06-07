@@ -42,7 +42,7 @@ namespace CodingReboot
             PushButtonData MOD01addexcel = MOD01AddExcelSheets.GetButtonData();
             PushButtonData MOD0201Schedules = MOD0201_Schedules.GetButtonData();
             PushButtonData MOD0202_ = MOD0202.GetButtonData();
-
+            PushButtonData MOD0202Tag = MOD0202_TagTool.GetButtonData();
 
             // 4. Create buttons
             //PushButton myButton1 = panel.AddItem(btnData1) as PushButton;
@@ -55,6 +55,7 @@ namespace CodingReboot
             PushButton myButton7 = panelmod2.AddItem(MOD0201Schedules) as PushButton;
 
             PushButton myButton8 = panelmod2.AddItem(MOD0202_) as PushButton;
+            PushButton myButton9 = panelmod2.AddItem(MOD0202Tag) as PushButton;
 
 
             //5. create split button (swops the button depending on choice)
