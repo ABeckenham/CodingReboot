@@ -7,6 +7,7 @@ using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -31,13 +32,11 @@ namespace CodingReboot
             // Your code goes here
 
             //View curView = doc.ActiveView;
-            
-
+                       
             FilteredElementCollector ViewCollector = new FilteredElementCollector(doc);
-            ViewCollector.OfCategory(BuiltInCategory.OST_Views)
-            .WhereElementIsNotElementType();
-                                  
-            
+            ViewCollector.OfCategory(BuiltInCategory.OST_Views).WhereElementIsNotElementType();
+                 
+
             List<BuiltInCategory> catListFP = new List<BuiltInCategory>();
             catListFP.Add(BuiltInCategory.OST_Doors);
             catListFP.Add(BuiltInCategory.OST_Furniture);
@@ -45,9 +44,6 @@ namespace CodingReboot
             catListFP.Add(BuiltInCategory.OST_Rooms);
             catListFP.Add(BuiltInCategory.OST_Walls);
             catListFP.Add(BuiltInCategory.OST_Windows);
-
-            //could i make multiple collectors for each view then run the script on which view it is??
-              //make multiple catfilters for each view type. 
 
             List<BuiltInCategory> catListCP = new List<BuiltInCategory>();
             catListCP.Add(BuiltInCategory.OST_LightingFixtures);
@@ -57,9 +53,7 @@ namespace CodingReboot
             catListAP.Add(BuiltInCategory.OST_Areas);
 
             List<BuiltInCategory> catListS = new List<BuiltInCategory>();
-            catListS.Add(BuiltInCategory.OST_Rooms);
-
-            
+            catListS.Add(BuiltInCategory.OST_Rooms);            
 
             //LINQ
             FamilySymbol curDoorTag = Utils.GetTagbyName(doc, "M_Door Tag");
@@ -70,7 +64,6 @@ namespace CodingReboot
             FamilySymbol curLightTag = Utils.GetTagbyName(doc, "M_Lighting Fixture Tag");
             FamilySymbol curRoomTag = Utils.GetTagbyName(doc, "M_Room Tag");
             FamilySymbol curWindowTag = Utils.GetTagbyName(doc, "M_Window Tag");
-
 
 
             //Dictionary
@@ -98,16 +91,13 @@ namespace CodingReboot
 
                 foreach (View curView in ViewCollector)
                 {
-                    
                     ViewType curViewType = curView.ViewType;
                     FilteredElementCollector Collector = new FilteredElementCollector(doc, curView.Id);
-
-                    if (curViewType == ViewType.ThreeD)
-                        continue;                    
-
+                   
                     viewcounter++;
                     if (curViewType == ViewType.FloorPlan)
                     {
+                        viewcounter++;
                         //floorplan cat list
                         ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catListFP);
                         Collector.WherePasses(catfilter).WhereElementIsNotElementType();
@@ -170,6 +160,7 @@ namespace CodingReboot
                     else if (curViewType == ViewType.CeilingPlan)
                     {   //tag; Light Fixtures, and rooms. "M_Light Fixture Tag", "M_Room Tag"
                         //ceilingplan cat list
+                        viewcounter++;
                         ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catListCP);
                         Collector.WherePasses(catfilter).WhereElementIsNotElementType();
 
@@ -193,6 +184,7 @@ namespace CodingReboot
 
                     else if (curViewType == ViewType.AreaPlan)
                     {
+                        viewcounter++;
                         //ceilingplan cat list
                         ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catListAP);
                         Collector.WherePasses(catfilter).WhereElementIsNotElementType();
@@ -222,6 +214,7 @@ namespace CodingReboot
 
                     else if (curViewType == ViewType.Section)
                     {
+                        viewcounter++;
                         ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catListS);
                         Collector.WherePasses(catfilter).WhereElementIsNotElementType();
                         foreach (Element curElem in Collector)
