@@ -51,7 +51,8 @@ namespace CodingReboot
             catListFP.Add(BuiltInCategory.OST_Walls);
             catListFP.Add(BuiltInCategory.OST_Windows);
 
-            
+            //could i make multiple collectors for each view then run the script on which view it is??
+              //make multiple catfilters for each view type. 
 
             List<BuiltInCategory> catListCP = new List<BuiltInCategory>();
             catListCP.Add(BuiltInCategory.OST_LightingFixtures);
@@ -63,22 +64,19 @@ namespace CodingReboot
             List<BuiltInCategory> catListS = new List<BuiltInCategory>();
             catListS.Add(BuiltInCategory.OST_Rooms);
 
-                        
-           
-            //could i make multiple collectors for each view then run the script on which view it is??
-
-            //make multiple catfilters for each view type. 
-
+            
 
             //LINQ
             FamilySymbol curDoorTag = Utils.GetTagbyName(doc, "M_Door Tag");
-            FamilySymbol curAreaTag = Utils.GetTagbyName(doc, "M_Area");
+            FamilySymbol curAreaTag = Utils.GetTagbyName(doc, "M_Area Tag");                   
             FamilySymbol curCwallTag = Utils.GetTagbyName(doc, "M_Curtain Wall Tag");
             FamilySymbol curWallTag = Utils.GetTagbyName(doc, "M_Wall Tag");
             FamilySymbol curFurnTag = Utils.GetTagbyName(doc, "M_Furniture Tag");
-            FamilySymbol curLightTag = Utils.GetTagbyName(doc, "Lighting Fixture Tag");
+            FamilySymbol curLightTag = Utils.GetTagbyName(doc, "M_Lighting Fixture Tag");
             FamilySymbol curRoomTag = Utils.GetTagbyName(doc, "M_Room Tag");
             FamilySymbol curWindowTag = Utils.GetTagbyName(doc, "M_Window Tag");
+
+
 
             //Dictionary
             //2. create dictionary for tags
@@ -98,120 +96,154 @@ namespace CodingReboot
             ///////////////////view type
             ViewType curViewType = curView.ViewType;
 
-
-            if (curViewType == ViewType.FloorPlan)
+            using (Transaction t = new Transaction(doc))
             {
-                //floorplan cat list
-                ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catListFP);
-                Collector.WherePasses(catfilter).WhereElementIsNotElementType();
+                t.Start("insert Tags");
 
-                foreach (Element curElem in Collector)
+                if (curViewType == ViewType.FloorPlan)
                 {
-                    //get location point, or midpoint
-                    XYZ insPoint = Utils.GetTagLocationPoint(curElem);
+                    //floorplan cat list
+                    ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catListFP);
+                    Collector.WherePasses(catfilter).WhereElementIsNotElementType();
 
-                    //get the correct tag based on the dictionary, and therefore category of the element
-                    FamilySymbol curTagType = tags[curElem.Category.Name];
-                    Reference curRef = new Reference(curElem);
-
-                    //tag; Curtain walls, doors, furniture, rooms,  walls, and windows 
-                    //M_Curtain Wall Tag, M_Door Tag, M_Furniture Tag, M_Room Tag, M_Wall Tag, M_Window Tag
-                    // window tag offset 3' in y direction
-
-
-                    if (curElem.Category.Name == "Walls")
+                    foreach (Element curElem in Collector)
                     {
-                        Wall curWall = curElem as Wall;
-                        WallType curWallType = curWall.WallType;
-                        if (curWallType.Kind == WallKind.Curtain)
+                        //tag; Curtain walls, doors, furniture, rooms,  walls, and windows 
+                        //M_Curtain Wall Tag, M_Door Tag, M_Furniture Tag, M_Room Tag, M_Wall Tag, M_Window Tag
+                        // window tag offset 3' in y direction
+                        //get location point, or midpoint
+                        XYZ insPoint = Utils.GetTagLocationPoint(curElem);
+                        if (insPoint == null)
+                            continue;
+                        //get the correct tag based on the dictionary, and therefore category of the element
+                        FamilySymbol curTagType = tags[curElem.Category.Name];
+                        Reference curRef = new Reference(curElem);
+
+                        if (curElem.Category.Name == "Walls")
                         {
-                            //create curtain wall tag
-                            IndependentTag newTag = IndependentTag.Create(doc, curTagType.Id, curView.Id,
-                            curRef, true, TagOrientation.Horizontal, insPoint);
+                            Wall curWall = curElem as Wall;
+                            WallType curWallType = curWall.WallType;
+                            if (curWallType.Kind == WallKind.Curtain)
+                            {
+                                //create curtain wall tag
+                                IndependentTag newTag = IndependentTag.Create(doc, curCwallTag.Id, curView.Id,
+                                curRef, true, TagOrientation.Horizontal, insPoint);
+                                counter++;
+                            }
+                            else
+                            {
+                                //create regular wall tag
+                                IndependentTag newTag = IndependentTag.Create(doc, curWallTag.Id, curView.Id,
+                                curRef, true, TagOrientation.Horizontal, insPoint);
+                                counter++;
+                            }
                         }
+
+                        else if (curElem.Category.Name == "Windows")
+                        {
+                            IndependentTag newTag = IndependentTag.Create(doc, curTagType.Id, curView.Id,
+                            curRef, false, TagOrientation.Horizontal, insPoint);
+                            newTag.TagHeadPosition = new XYZ(insPoint.X, (insPoint.Y + 3), 0);
+                            newTag.HasLeader = false;
+                            counter++;
+                        }
+
                         else
                         {
                             IndependentTag newTag = IndependentTag.Create(doc, curTagType.Id, curView.Id,
-                            curRef, true, TagOrientation.Horizontal, insPoint);
-                            //create regular wall tag
+                            curRef, false, TagOrientation.Horizontal, insPoint);
+                            newTag.HasLeader = false;
+                            counter++;
                         }
+
                     }
-                    else
+                }
+
+                else if (curViewType == ViewType.CeilingPlan)
+                {   //tag; Light Fixtures, and rooms. "M_Light Fixture Tag", "M_Room Tag"
+                    //ceilingplan cat list
+                    ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catListCP);
+                    Collector.WherePasses(catfilter).WhereElementIsNotElementType();
+
+                    foreach (Element curElem in Collector)
                     {
+                        //get location point, or midpoint
+                        XYZ insPoint = Utils.GetTagLocationPoint(curElem);
+                        if(insPoint == null)
+                         continue; 
+                        //get the correct tag based on the dictionary, and therefore category of the element
+                        FamilySymbol curTagType = tags[curElem.Category.Name];
+                        Reference curRef = new Reference(curElem);
+
                         IndependentTag newTag = IndependentTag.Create(doc, curTagType.Id, curView.Id,
-                        curRef, false, TagOrientation.Horizontal, insPoint);
+                                curRef, true, TagOrientation.Horizontal, insPoint);
+                        newTag.HasLeader = false;
+                        newTag.TagHeadPosition = new XYZ(insPoint.X, insPoint.Y, 0);
+                        counter++;
                     }
-
                 }
-            }
-            else if (curViewType == ViewType.CeilingPlan)
-            {   //tag; Light Fixtures, and rooms. "M_Light Fixture Tag", "M_Room Tag"
-                //ceilingplan cat list
-                ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catListCP);
-                Collector.WherePasses(catfilter).WhereElementIsNotElementType();
 
-                foreach (Element curElem in Collector)
+                else if (curViewType == ViewType.AreaPlan)
                 {
-                    //get location point, or midpoint
-                    XYZ insPoint = Utils.GetTagLocationPoint(curElem);
-                    //get the correct tag based on the dictionary, and therefore category of the element
-                    FamilySymbol curTagType = tags[curElem.Category.Name];
-                    Reference curRef = new Reference(curElem);
+                    //ceilingplan cat list
+                    ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catListAP);
+                    Collector.WherePasses(catfilter).WhereElementIsNotElementType();
 
-                }
-            }
-
-            else if (curViewType == ViewType.AreaPlan)
-            {
-                //ceilingplan cat list
-                ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catListAP);
-                Collector.WherePasses(catfilter).WhereElementIsNotElementType();
-
-                foreach (Element curElem in Collector)
-                {
-                    //get location point, or midpoint
-                    XYZ insPoint = Utils.GetTagLocationPoint(curElem);
-
-                    //get the correct tag based on the dictionary, and therefore category of the element
-                    FamilySymbol curTagType = tags[curElem.Category.Name];
-                    Reference curRef = new Reference(curElem);
-
-                    if (curElem.Category.Name == "Areas")
+                    foreach (Element curElem in Collector)
                     {
-                        ViewPlan curAreaPlan = curView as ViewPlan;
-                        Area curArea = curElem as Area;
-                        AreaTag newAreaTag = doc.Create.NewAreaTag(curAreaPlan, curArea, new UV(insPoint.X, insPoint.Y));
-                        newAreaTag.TagHeadPosition = new XYZ(insPoint.X, insPoint.Y, 0);
-                        newAreaTag.HasLeader = false;
+                        //get location point, or midpoint
+                        XYZ insPoint = Utils.GetTagLocationPoint(curElem);
+                        if (insPoint == null)
+                            continue;
+                        //get the correct tag based on the dictionary, and therefore category of the element
+                        FamilySymbol curTagType = tags[curElem.Category.Name];
+                        Reference curRef = new Reference(curElem);
+
+                        if (curElem.Category.Name == "Areas")
+                        {
+                            ViewPlan curAreaPlan = curView as ViewPlan;
+                            Area curArea = curElem as Area;
+                            AreaTag newAreaTag = doc.Create.NewAreaTag(curAreaPlan, curArea, new UV(insPoint.X, insPoint.Y));
+                            newAreaTag.TagHeadPosition = new XYZ(insPoint.X, insPoint.Y, 0);
+                            newAreaTag.HasLeader = false;
+                            counter++;
+                        }
+                        else continue;
                     }
-                    else continue;
                 }
-            }
 
-            else if (curViewType == ViewType.Section)
-            {
-                ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catListS);
-                Collector.WherePasses(catfilter).WhereElementIsNotElementType();
-                foreach (Element curElem in Collector)
+                else if (curViewType == ViewType.Section)
                 {
-                    //get location point, or midpoint
-                    XYZ insPoint = Utils.GetTagLocationPoint(curElem);
+                    ElementMulticategoryFilter catfilter = new ElementMulticategoryFilter(catListS);
+                    Collector.WherePasses(catfilter).WhereElementIsNotElementType();
+                    foreach (Element curElem in Collector)
+                    {
+                        //get location point, or midpoint
+                        XYZ insPoint = Utils.GetTagLocationPoint(curElem);
+                        if (insPoint == null)
+                            continue;
+                        //get the correct tag based on the dictionary, and therefore category of the element
+                        FamilySymbol curTagType = tags[curElem.Category.Name];
+                        Reference curRef = new Reference(curElem);
 
-                    //get the correct tag based on the dictionary, and therefore category of the element
-                    FamilySymbol curTagType = tags[curElem.Category.Name];
-                    Reference curRef = new Reference(curElem);
-
+                        IndependentTag newTag = IndependentTag.Create(doc, curTagType.Id, curView.Id,
+                                curRef, true, TagOrientation.Horizontal, insPoint);
+                        newTag.HasLeader = false;
+                        newTag.TagHeadPosition = new XYZ(insPoint.X, insPoint.Y, (insPoint.Z+3));
+                        counter++;
+                    }
                 }
+
+                else
+                {
+                    TaskDialog.Show("Error", "This tool only works for areaplans ,ceilingplans, floorplans and sections");
+                }
+                                
+                TaskDialog.Show("Number of Tags", "There are " + counter + " number of tags created!");
+
+                t.Commit();
+
             }
-
-            else
-            {
-                TaskDialog.Show("Error", "This tool only works for areaplans ,ceilingplans, floorplans and sections");
-            }    
-            
-            counter++;
-            TaskDialog.Show("Number of Tags", "There are " + counter + " number of tags created!");
-
 
             return Result.Succeeded;
         }  
@@ -226,9 +258,9 @@ namespace CodingReboot
                 buttonInternalName,
                 buttonTitle,
                 MethodBase.GetCurrentMethod().DeclaringType?.FullName,
-                Properties.Resources.Blue_32,
-                Properties.Resources.Blue_16,
-                "This is a tooltip for Button 2");
+                Properties.Resources.icons8_dog_tag_pulsar_color_3296,
+                Properties.Resources.icons8_dog_tag_pulsar_color_1696,
+                "Tag the current view with the appropriate tags");
 
             return myButtonData1.Data;
         }

@@ -123,6 +123,46 @@ namespace CodingReboot.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_color_palette_pulsar_gradient_1696 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_color_palette_pulsar_gradient_1696", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_color_palette_pulsar_gradient_3296 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_color_palette_pulsar_gradient_3296", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_dog_tag_pulsar_color_1696 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_dog_tag_pulsar_color_1696", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_dog_tag_pulsar_color_3296 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_dog_tag_pulsar_color_3296", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_drink_pulsar_color_1696 {
             get {
                 object obj = ResourceManager.GetObject("icons8_drink_pulsar_color_1696", resourceCulture);

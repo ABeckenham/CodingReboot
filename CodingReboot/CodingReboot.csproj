@@ -198,6 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="MOD0202_TagToolExtreme.cs" />
     <Compile Include="MOD0202_TagTool.cs" />
     <Compile Include="MOD0202.cs" />
     <Compile Include="MOD0201_Schedules.cs" />
@@ -241,6 +242,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CodingReboot.addin" />
+    <EmbeddedResource Include="Resources\icons8-dog-tag-pulsar-color-3296.png" />
+    <EmbeddedResource Include="Resources\icons8-dog-tag-pulsar-color-1696.png" />
+    <EmbeddedResource Include="Resources\icons8-color-palette-pulsar-gradient-3296.png" />
+    <EmbeddedResource Include="Resources\icons8-color-palette-pulsar-gradient-1696.png" />
     <EmbeddedResource Include="Resources\icons8-badge-pulsar-color-3296.png" />
     <EmbeddedResource Include="Resources\icons8-badge-pulsar-color-1696.png" />
     <EmbeddedResource Include="Resources\icons8-sheets-pulsar-color-3296.png" />

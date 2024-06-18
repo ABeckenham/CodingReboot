@@ -139,7 +139,8 @@ namespace CodingReboot
         internal static FamilySymbol GetTagbyName(Document doc, string tagName)
         {
             FamilySymbol curTag = new FilteredElementCollector(doc)
-                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
+                            .OfClass(typeof(FamilySymbol))
+                            .Cast<FamilySymbol>()
                             .Where(x => x.FamilyName.Equals(tagName))
                             .First();
 
