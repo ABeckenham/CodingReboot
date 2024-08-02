@@ -148,31 +148,28 @@ namespace CodingReboot
         }
 
 
-        internal static XYZ GetTagLocationPoint(Element curElem)
+        internal static XYZ GetTagLocationPoint(Location loc)
         {
             XYZ insPoint;
-            LocationPoint locPoint;
-            LocationCurve locCurve;
-
             //get the location
-            Location curLoc = curElem.Location;
-            if (curLoc == null)
+            
+            if (loc == null)
                 return null;
             else
             {
-                locPoint = curLoc as LocationPoint;
+                LocationPoint locPoint = loc as LocationPoint;
                 if (locPoint != null)
                 {
                     insPoint = locPoint.Point;
                 }
                 else
                 {
-                    locCurve = curLoc as LocationCurve;
+                    LocationCurve locCurve = loc as LocationCurve;
                     Curve curCurve = locCurve.Curve;
                     insPoint = Utils.GetMidpointBetweenTwoPoints(curCurve.GetEndPoint(0), curCurve.GetEndPoint(1));
                 }
             }
-
+            //need some additional logic for curved walls 
             return insPoint;
         }
 

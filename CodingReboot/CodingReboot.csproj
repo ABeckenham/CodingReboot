@@ -198,6 +198,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="MOD0203.cs" />
+    <Compile Include="MOD0202_TagToolbefore.cs" />
     <Compile Include="MOD0202_TagToolExtreme.cs" />
     <Compile Include="MOD0202_TagTool.cs" />
     <Compile Include="MOD0202.cs" />
