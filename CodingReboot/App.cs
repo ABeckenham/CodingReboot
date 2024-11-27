@@ -43,8 +43,11 @@ namespace CodingReboot
             PushButtonData MOD0201Schedules = MOD0201_Schedules.GetButtonData();
             PushButtonData MOD0202_ = MOD0202.GetButtonData();
             PushButtonData MOD0202Tag = MOD0202_TagTool.GetButtonData();
-            //PushButtonData MOD0202TagEx = MOD0202_TagToolExtreme.GetButtonData();
-            PushButtonData MOD0203_ = MOD0203.GetButtonData();
+            PushButtonData MOD0202TagEx = MOD0202_TagToolExtreme.GetButtonData();
+            PushButtonData MOD0203_ = MOD0203_1.GetButtonData();
+            PushButtonData MOD0303_DimD1 = MOD0203_DimD1.GetButtonData();
+            PushButtonData MOD0303_DimD2 = MOD0203_DimD2.GetButtonData();
+            PushButtonData RFamilies_SParamToExcel = RFamilies_SParameterstoExcel.GetButtonData();
 
             // 4. Create buttons
             //PushButton myButton1 = panel.AddItem(btnData1) as PushButton;
@@ -54,12 +57,14 @@ namespace CodingReboot
             PushButton myButton5 = panelmod1.AddItem(MOD0103) as PushButton;
            
             PushButton myButton6 = panelRidge.AddItem(MOD01addexcel) as PushButton;
-            PushButton myButton7 = panelmod2.AddItem(MOD0201Schedules) as PushButton;
+            PushButton BIMButton1 = panelRidge.AddItem(RFamilies_SParamToExcel) as PushButton;
 
+            PushButton myButton7 = panelmod2.AddItem(MOD0201Schedules) as PushButton;
             PushButton myButton8 = panelmod2.AddItem(MOD0202_) as PushButton;
             PushButton myButton9 = panelmod2.AddItem(MOD0202Tag) as PushButton;
-            //PushButton myButton10 = panelmod2.AddItem(MOD0202TagEx) as PushButton;
+            PushButton myButton10 = panelmod2.AddItem(MOD0202TagEx) as PushButton;
             PushButton myButton11 = panelmod2.AddItem(MOD0203_) as PushButton;
+            
 
             //5. create split button (swops the button depending on choice)
             //SplitButtonData splitbuttonData = new SplitButtonData("split1","split\rButton");
@@ -67,7 +72,7 @@ namespace CodingReboot
             //splitbutton.AddPushButton(btnData1);
             //splitbutton.AddPushButton(btnData2);
 
-            //6. create pulldown button
+            //6.create pulldown button
             //PulldownButtonData pullbuttondata = new PulldownButtonData("pulldown1", "Pull Down");
             //pullbuttondata.LargeImage = ButtonDataClass.BitmapToImageSource(Properties.Resources.Red_32);
             //pullbuttondata.Image = ButtonDataClass.BitmapToImageSource(Properties.Resources.Red_16);
@@ -76,7 +81,7 @@ namespace CodingReboot
             //pulldownbutton.AddPushButton(MOD0102);
 
             //7. stacked buttons (vertically stacked) 
-            //panel.AddStackedItems(MOD01addexcel, MOD01addexcel2);
+            panelmod2.AddStackedItems(MOD0303_DimD1, MOD0303_DimD2);
 
             //NOTE:
             //    To create a new tool, copy lines 35 and 39 and rename the variables to "btnData3" and "myButton3".

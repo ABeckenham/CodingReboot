@@ -69,8 +69,6 @@ namespace CodingReboot
             //forloop to go through, iterate through everything
             for(int i = 1; i <= rows; i++)
             {
-
-
                 List<string> rowData = new List<string>();
                 for (int j = 1; j <= cols; j++)
                 {

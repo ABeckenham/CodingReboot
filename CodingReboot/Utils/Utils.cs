@@ -172,6 +172,99 @@ namespace CodingReboot
             //need some additional logic for curved walls 
             return insPoint;
         }
+        internal static bool IsCurtainWall(Element curWallElem)
+        {
+            Wall curWall = curWallElem as Wall;
 
+            if (curWall.WallType.Kind == WallKind.Curtain)
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        internal static Dictionary<string, FamilySymbol> GetTagDictionary(Document doc)
+        {
+            Dictionary<string, FamilySymbol> tagDict = new Dictionary<string, FamilySymbol>();
+            tagDict.Add("Areas", Utils.GetTagbyName(doc, "M_Area Tag"));
+            tagDict.Add("Curtain Walls", Utils.GetTagbyName(doc, "M_Curtain Wall Tag"));
+            tagDict.Add("Doors", Utils.GetTagbyName(doc, "M_Door Tag"));
+            tagDict.Add("Furniture", Utils.GetTagbyName(doc, "M_Furniture Tag"));
+            tagDict.Add("Lighting Fixtures", Utils.GetTagbyName(doc, "M_Lighting Fixture Tag"));
+            tagDict.Add("Rooms", Utils.GetTagbyName(doc, "M_Room Tag"));
+            tagDict.Add("Walls", Utils.GetTagbyName(doc, "M_Wall Tag"));
+            tagDict.Add("Windows", Utils.GetTagbyName(doc, "M_Window Tag"));
+
+            return tagDict;
+
+        }
+
+        internal static Dictionary<ViewType, List<BuiltInCategory>> GetViewTypeCatDictionary()
+        {
+            Dictionary<ViewType, List<BuiltInCategory>> dictionary = new Dictionary<ViewType, List<BuiltInCategory>>();
+
+            dictionary.Add(ViewType.FloorPlan, new List<BuiltInCategory>
+            {
+                BuiltInCategory.OST_Rooms,
+                BuiltInCategory.OST_Windows,
+                BuiltInCategory.OST_Doors,
+                BuiltInCategory.OST_Furniture,
+                BuiltInCategory.OST_Walls
+            });
+
+            dictionary.Add(ViewType.AreaPlan, new List<BuiltInCategory> { BuiltInCategory.OST_Areas });
+            dictionary.Add(ViewType.CeilingPlan, new List<BuiltInCategory>
+            {
+                BuiltInCategory.OST_Rooms,
+                BuiltInCategory.OST_LightingFixtures
+
+            });
+
+            dictionary.Add(ViewType.Section, new List<BuiltInCategory> { BuiltInCategory.OST_Rooms });
+            return dictionary;
+        }
+
+        internal static bool IsLineVertical(Curve curLine)
+        {
+            XYZ p1 = curLine.GetEndPoint(0);
+            XYZ p2 = curLine.GetEndPoint(1);
+            if (Math.Abs(p1.X - p2.X) < Math.Abs(p1.Y - p2.Y))
+                return true;
+            return false;
+        }
+
+
+        public static class Convert
+        {
+            public static double ConvertMMtoFT(double mmDim)
+            {
+                //convert millimeters to feet
+                double convert = (mmDim / 25.4) / 12;
+
+                return convert;
+            }
+
+            public static double ConvertCMtoFT(double cmDim)
+            {
+                //convert centimeters to feet
+                double convert = (cmDim / 2.54) / 12;
+
+                return convert;
+            }
+
+            public static double ConvertMtoFT(double mDim)
+            {
+                //convert meters to feet
+                return mDim * 3.28084;
+            }
+
+            public static Document OpenDocumentFile(string filePath, bool audit  = false, bool detachfromCentral = false)
+            {
+                return null; 
+            }
+        }
+
+            
     }
+
 }

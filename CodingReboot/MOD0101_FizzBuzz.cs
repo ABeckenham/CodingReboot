@@ -44,6 +44,9 @@ namespace CodingReboot
             ViewFamilyType VFTfloorplan = null;
             ViewFamilyType VFTceilingplan = null;
 
+
+            //you only need one instance of the viewfamilyType to get the type element.
+            //that is why it isnt included in the main action group
             foreach (ViewFamilyType curType in viewtypecollector)
             {
                 if (curType.ViewFamily == ViewFamily.FloorPlan)
@@ -57,7 +60,19 @@ namespace CodingReboot
                     VFTceilingplan = curType;
                     
                 }
+                // Exit the loop if both types are found
+                if (VFTfloorplan != null && VFTceilingplan != null)
+                {
+                    break;
+                }
             }
+
+                // Check if both types were found
+                if (VFTfloorplan == null || VFTceilingplan == null)
+                {
+                    // Handle the case where one or both types weren't found
+                    TaskDialog.Show("Error", "Unable to find both floor plan and ceiling plan view types.");
+                }        
 
             Transaction t = new Transaction(doc);
             t.Start("Creating sheets, plans, and ceilings for the FizzBuzz challenge");

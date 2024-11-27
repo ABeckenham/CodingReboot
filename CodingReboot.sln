@@ -15,6 +15,8 @@ Global
 		2023Release|Any CPU = 2023Release|Any CPU
 		2024Debug|Any CPU = 2024Debug|Any CPU
 		2024Release|Any CPU = 2024Release|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{131B9290-F8BE-4A49-BF16-B8C14FDFF94E}.2021Debug|Any CPU.ActiveCfg = 2021Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{131B9290-F8BE-4A49-BF16-B8C14FDFF94E}.2024Debug|Any CPU.Build.0 = 2024Debug|Any CPU
 		{131B9290-F8BE-4A49-BF16-B8C14FDFF94E}.2024Release|Any CPU.ActiveCfg = 2024Release|Any CPU
 		{131B9290-F8BE-4A49-BF16-B8C14FDFF94E}.2024Release|Any CPU.Build.0 = 2024Release|Any CPU
+		{131B9290-F8BE-4A49-BF16-B8C14FDFF94E}.Debug|Any CPU.ActiveCfg = 2024Debug|Any CPU
+		{131B9290-F8BE-4A49-BF16-B8C14FDFF94E}.Debug|Any CPU.Build.0 = 2024Debug|Any CPU
+		{131B9290-F8BE-4A49-BF16-B8C14FDFF94E}.Release|Any CPU.ActiveCfg = 2024Release|Any CPU
+		{131B9290-F8BE-4A49-BF16-B8C14FDFF94E}.Release|Any CPU.Build.0 = 2024Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

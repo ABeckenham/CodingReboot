@@ -74,7 +74,7 @@ namespace CodingReboot
 
             //2. get the categories for the view type 
             List<BuiltInCategory> catList = new List<BuiltInCategory>();
-            Dictionary<ViewType, List<BuiltInCategory>> viewTypeCatDic = GetViewTypeCatDictionary();
+            Dictionary<ViewType, List<BuiltInCategory>> viewTypeCatDic = Utils.GetViewTypeCatDictionary();
 
             //if the view type is of one you dont want, you can do the tryget to test and get at the same time
             if(viewTypeCatDic.TryGetValue(curViewType, out catList ) == false)
@@ -93,7 +93,7 @@ namespace CodingReboot
 
             //Dictionary
             //6. create dictionary for tags
-            Dictionary<string, FamilySymbol> tagdictionary = GetTagDictionary(doc);
+            Dictionary<string, FamilySymbol> tagdictionary = Utils.GetTagDictionary(doc);
 
             using (Transaction t = new Transaction(doc))
             {
@@ -118,7 +118,7 @@ namespace CodingReboot
                     if(catName == "Walls")
                     {
                         addleader = true;
-                        if(IsCurtainWall(curElem))
+                        if(Utils.IsCurtainWall(curElem))
                         {
                             catName = "Curtain Walls";
                         }
@@ -311,57 +311,9 @@ namespace CodingReboot
             return Result.Succeeded;
         }
 
-        private bool IsCurtainWall(Element curWallElem)
-        {
-            Wall curWall = curWallElem as Wall;
+        
 
-            if (curWall.WallType.Kind == WallKind.Curtain)
-            {
-                return true;
-            }
-            else return false;
-        }
-
-        private Dictionary<string, FamilySymbol> GetTagDictionary(Document doc)
-        {
-            Dictionary<string, FamilySymbol> tagDict = new Dictionary<string, FamilySymbol> ();
-            tagDict.Add("Areas", Utils.GetTagbyName(doc, "M_Area Tag"));
-            tagDict.Add("Curtain Walls", Utils.GetTagbyName(doc, "M_Curtain Wall Tag"));
-            tagDict.Add("Doors", Utils.GetTagbyName(doc, "M_Door Tag"));
-            tagDict.Add("Furniture", Utils.GetTagbyName(doc, "M_Furniture Tag"));
-            tagDict.Add("Lighting Fixtures", Utils.GetTagbyName(doc, "M_Lighting Fixture Tag"));
-            tagDict.Add("Rooms", Utils.GetTagbyName(doc, "M_Room Tag"));
-            tagDict.Add("Walls", Utils.GetTagbyName(doc, "M_Wall Tag"));
-            tagDict.Add("Windows", Utils.GetTagbyName(doc, "M_Window Tag"));
-
-            return tagDict;
-
-        }
-
-        private Dictionary<ViewType, List<BuiltInCategory>> GetViewTypeCatDictionary()
-        {
-            Dictionary <ViewType, List<BuiltInCategory>> dictionary = new Dictionary<ViewType, List<BuiltInCategory>> ();
-            
-            dictionary.Add(ViewType.FloorPlan, new List<BuiltInCategory>
-            {
-                BuiltInCategory.OST_Rooms,
-                BuiltInCategory.OST_Windows,
-                BuiltInCategory.OST_Doors,
-                BuiltInCategory.OST_Furniture,
-                BuiltInCategory.OST_Walls
-            });
-
-            dictionary.Add(ViewType.AreaPlan, new List<BuiltInCategory> { BuiltInCategory.OST_Areas });
-            dictionary.Add(ViewType.CeilingPlan, new List<BuiltInCategory>
-            {
-                BuiltInCategory.OST_Rooms,
-                BuiltInCategory.OST_LightingFixtures
-
-            });
-
-            dictionary.Add(ViewType.Section, new List<BuiltInCategory> { BuiltInCategory.OST_Rooms });
-            return dictionary;
-        }
+        
 
         internal static PushButtonData GetButtonData()
         {

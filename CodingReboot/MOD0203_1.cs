@@ -15,7 +15,7 @@ using System.Reflection;
 namespace CodingReboot
 {
     [Transaction(TransactionMode.Manual)]
-    public class MOD0203: IExternalCommand
+    public class MOD0203_1: IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
@@ -38,7 +38,12 @@ namespace CodingReboot
             {
                 //3a. get midpoint of line 
                 Curve curve = curLine.GeometryCurve;
-                XYZ midPoint = curve.Evaluate(0.5, true);
+                XYZ midPoint = curve.Evaluate(0.75, true);
+
+                //7. check line is vertical
+
+                if (Utils.IsLineVertical(curve) == false)
+                    continue;
 
                 //3b. add lines as a reference to ref array list
                 referenceArray.Append(new Reference(curLine));
@@ -55,19 +60,23 @@ namespace CodingReboot
             XYZ point2 = sortedList.Last();
 
             //5. Create line for dimension (not a visible line, but one commited to memory)
-            Line dimLine = Line.CreateBound(point1, point2);
-
+            //Line dimLine = Line.CreateBound(point1, point2);
+            Line dimLine = Line.CreateBound(point1, new XYZ(point2.X, point1.Y,0));
 
             //6. create dimension
             using (Transaction t = new Transaction(doc))
             {
                 t.Start("Create dimension");
                 Dimension newdim = doc.Create.NewDimension(doc.ActiveView, dimLine, referenceArray);
+                t.Commit();
             }
 
 
             return Result.Succeeded;
         }
+
+        
+
         internal static PushButtonData GetButtonData()
         {
             // use this method to define the properties for this command in the Revit ribbon
