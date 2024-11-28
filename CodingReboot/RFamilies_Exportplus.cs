@@ -87,9 +87,9 @@ namespace CodingReboot
                     //if the family category is not in the dictionary, add new key/list
                     if (!FamilyDictionary.ContainsKey(categoryName))
                     {
-                        FamilyDictionary[categoryName] = new List<FamilySymbol>();                                     
+                        FamilyDictionary[categoryName] = new List<FamilySymbol>();
                         //create folder for category
-                        string categorypath = Path.Combine (folderpath, categoryName);
+                        string categorypath = Path.Combine(folderpath, categoryName);
                     }
 
                     //if it does exist add the symbol to the current key list
@@ -99,17 +99,17 @@ namespace CodingReboot
                     //search for nested families
                     //to collect nested families you collect the nestedFamilyIds
                     var nestedFamilyIDs = familySymbol.Family.GetFamilySymbolIds();
-                    foreach(ElementId nestId in nestedFamilyIDs)
+                    foreach (ElementId nestId in nestedFamilyIDs)
                     {
                         FamilySymbol nestedSymbol = doc.GetElement(nestId) as FamilySymbol;
                         FamilyDictionary[categoryName].Add(nestedSymbol);
                         //create folder for nested Families
-                        string categorypath = Path.Combine(folderpath, categoryName,familySymbol.ToString());
+                        string categorypath = Path.Combine(folderpath, categoryName, familySymbol.ToString());
                     }
 
                 }
 
-                
+            }    
 
 
 

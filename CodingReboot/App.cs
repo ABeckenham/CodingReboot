@@ -48,6 +48,7 @@ namespace CodingReboot
             PushButtonData MOD0303_DimD1 = MOD0203_DimD1.GetButtonData();
             PushButtonData MOD0303_DimD2 = MOD0203_DimD2.GetButtonData();
             PushButtonData RFamilies_SParamToExcel = RFamilies_SParameterstoExcel.GetButtonData();
+            PushButtonData RTemplate_ViewFamilyType = RTemplate_ViewFamilyTypes.GetButtonData();
 
             // 4. Create buttons
             //PushButton myButton1 = panel.AddItem(btnData1) as PushButton;
@@ -58,6 +59,7 @@ namespace CodingReboot
            
             PushButton myButton6 = panelRidge.AddItem(MOD01addexcel) as PushButton;
             PushButton BIMButton1 = panelRidge.AddItem(RFamilies_SParamToExcel) as PushButton;
+            PushButton TempButton1 = panelRidge.AddItem(RTemplate_ViewFamilyType) as PushButton;
 
             PushButton myButton7 = panelmod2.AddItem(MOD0201Schedules) as PushButton;
             PushButton myButton8 = panelmod2.AddItem(MOD0202_) as PushButton;

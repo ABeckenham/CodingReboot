@@ -19,6 +19,10 @@ namespace CodingReboot
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
+            //this tool is the dimenison detective challenge, i found this one really hard.
+            // firstly tool 1 automatically dimensions horizontal and vertical columns on a grid
+            //tool 2 dims all the rooms 
+            
             // this is a variable for the Revit application
             UIApplication uiapp = commandData.Application;
 
