@@ -204,6 +204,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="RTemplate_ExViewFamilyTypes.cs" />
     <Compile Include="RFamilies_Exportplus.cs" />
     <Compile Include="RFamilies_SParameterstoExcel.cs" />
     <Compile Include="MOD0203_DimD2.cs" />
