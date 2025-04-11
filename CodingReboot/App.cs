@@ -32,6 +32,7 @@ namespace CodingReboot
             RibbonPanel panelmod1 = Utils.CreateRibbonPanel(app, tabName, "MOD01");
             RibbonPanel panelmod2 = Utils.CreateRibbonPanel(app, tabName, "MOD02");
             RibbonPanel panelRidge = Utils.CreateRibbonPanel(app, tabName, "Ridge");
+            RibbonPanel PanelTesting = Utils.CreateRibbonPanel(app, tabName, "Testing");
 
             // 3. Create button data instances
             //PushButtonData btnData1 = Command1.GetButtonData();
@@ -43,29 +44,34 @@ namespace CodingReboot
             PushButtonData MOD0201Schedules = MOD0201_Schedules.GetButtonData();
             PushButtonData MOD0202_ = MOD0202.GetButtonData();
             PushButtonData MOD0202Tag = MOD0202_TagTool.GetButtonData();
-            PushButtonData MOD0202TagEx = MOD0202_TagToolExtreme.GetButtonData();
-            PushButtonData MOD0203_ = MOD0203_1.GetButtonData();
+            PushButtonData MOD0202TagEx = MOD0202_TagToolExtreme.GetButtonData();            
             PushButtonData MOD0303_DimD1 = MOD0203_DimD1.GetButtonData();
             PushButtonData MOD0303_DimD2 = MOD0203_DimD2.GetButtonData();
             PushButtonData RFamilies_SParamToExcel = RFamilies_SParameterstoExcel.GetButtonData();
             PushButtonData RTemplate_ViewFamilyType = RTemplate_ExViewFamilyTypes.GetButtonData();
+            PushButtonData Testing_WPF01= WPF01.GetButtonData();
 
-            // 4. Create buttons
-            //PushButton myButton1 = panel.AddItem(btnData1) as PushButton;
-            //PushButton myButton2 = panel.AddItem(btnData2) as PushButton;
+            // 4. Create buttons           
+
+            //mod1 panel
             PushButton myButton3 = panelmod1.AddItem(MOD0101) as PushButton;
             PushButton myButton4 = panelmod1.AddItem(MOD0102) as PushButton;
             PushButton myButton5 = panelmod1.AddItem(MOD0103) as PushButton;
            
+            //ridge panel
             PushButton myButton6 = panelRidge.AddItem(MOD01addexcel) as PushButton;
             PushButton BIMButton1 = panelRidge.AddItem(RFamilies_SParamToExcel) as PushButton;
             PushButton TempButton1 = panelRidge.AddItem(RTemplate_ViewFamilyType) as PushButton;
 
+            //mod2 panel
             PushButton myButton7 = panelmod2.AddItem(MOD0201Schedules) as PushButton;
             PushButton myButton8 = panelmod2.AddItem(MOD0202_) as PushButton;
             PushButton myButton9 = panelmod2.AddItem(MOD0202Tag) as PushButton;
             PushButton myButton10 = panelmod2.AddItem(MOD0202TagEx) as PushButton;
-            PushButton myButton11 = panelmod2.AddItem(MOD0203_) as PushButton;
+            panelmod2.AddStackedItems(MOD0303_DimD1, MOD0303_DimD2);
+
+            //Testing panel
+            PushButton WPFTestingButton = PanelTesting.AddItem(Testing_WPF01) as PushButton;
             
 
             //5. create split button (swops the button depending on choice)
@@ -83,11 +89,8 @@ namespace CodingReboot
             //pulldownbutton.AddPushButton(MOD0102);
 
             //7. stacked buttons (vertically stacked) 
-            panelmod2.AddStackedItems(MOD0303_DimD1, MOD0303_DimD2);
-
-            //NOTE:
-            //    To create a new tool, copy lines 35 and 39 and rename the variables to "btnData3" and "myButton3".
-            //     Change the name of the tool in the arguments of line
+            //panelmod2.AddStackedItems(MOD0303_DimD1, MOD0303_DimD2);
+           
 
             return Result.Succeeded;
         }

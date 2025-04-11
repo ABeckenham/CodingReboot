@@ -17,7 +17,7 @@
 		<ClientId>79C7AED0-2960-402A-B80B-15FACF3E2DF1</ClientId>
 		<VendorId>com.YOUR COMPANY NAME</VendorId>
 		<VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
-	</AddIn>
+	</AddIn>	
   <AddIn Type="Application">
     <Name>CodingReboot</Name>
     <Assembly>CodingReboot.dll</Assembly>

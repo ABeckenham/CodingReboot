@@ -204,6 +204,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="WPF01.cs" />
+    <Compile Include="CommandWPF.cs" />
+    <Compile Include="MyForms\MyForm.xaml.cs">
+      <DependentUpon>MyForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RTemplate_ExViewFamilyTypes.cs" />
     <Compile Include="RFamilies_Exportplus.cs" />
     <Compile Include="RFamilies_SParameterstoExcel.cs" />
@@ -310,6 +315,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MyForms\MyForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
