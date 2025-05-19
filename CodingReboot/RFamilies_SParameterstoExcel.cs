@@ -1,3 +1,4 @@
+
 #region Namespaces
 using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
@@ -44,7 +45,9 @@ namespace CodingReboot
             try
             {
                 string savepath = Path.Combine(folderpath, "FamilyParameters_Complete.xlsx");
-                string[] filedata = Directory.GetFiles(folderpath, "*.rfa");
+
+                // Get all unique .rfa files
+                string[] filedata = Directory.GetFiles(folderpath, "*.rfa", SearchOption.TopDirectoryOnly);
                 int totalFiles = filedata.Length;
 
                 if (totalFiles == 0)
@@ -97,84 +100,106 @@ namespace CodingReboot
 
                             progressBar.UpdateProgress($"Processing family {currentFile} of {totalFiles}", (currentFile * 100) / totalFiles);
 
-                            if (Path.GetExtension(file).Equals(".rfa", StringComparison.OrdinalIgnoreCase))
+                            Document familyDoc = null;
+                            try
                             {
-                                Document familyDoc = null;
-                                try
+                                string filename = Path.GetFileNameWithoutExtension(file);
+                                familyDoc = uiapp.Application.OpenDocumentFile(file);
+
+                                if (familyDoc.IsFamilyDocument)
                                 {
-                                    familyDoc = uiapp.Application.OpenDocumentFile(file);
-                                    string filename = Path.GetFileNameWithoutExtension(file);
+                                    FamilyManager famMan = familyDoc.FamilyManager;
 
-                                    if (familyDoc.IsFamilyDocument)
+                                    // Create a list to store processed parameter names to avoid duplicates
+                                    HashSet<string> processedParams = new HashSet<string>();
+
+                                    // Process only the parameters that belong to this family
+                                    // famMan.Parameters gives us only the parameters of the main family
+                                    foreach (FamilyParameter param in famMan.Parameters)
                                     {
-                                        FamilyManager famMan = familyDoc.FamilyManager;
+                                        string paramKey = $"{param.Definition.Name}_{param.StorageType}_{param.IsInstance}";
 
-                                        foreach (FamilyParameter param in famMan.Parameters)
+                                        // Skip if we've already processed this exact parameter
+                                        if (processedParams.Contains(paramKey))
+                                            continue;
+
+                                        processedParams.Add(paramKey);
+
+                                        Row dataRow = new Row();
+
+                                        // Add family name and parameter name
+                                        dataRow.AppendChild(CreateCell(filename));
+                                        dataRow.AppendChild(CreateCell(param.Definition.Name));
+
+                                        // Add storage type safely
+                                        string storageType = "Unknown";
+                                        try
                                         {
-                                            Row dataRow = new Row();
+                                            storageType = param.StorageType.ToString();
+                                        }
+                                        catch { }
+                                        dataRow.AppendChild(CreateCell(storageType));
 
-                                            // Add family name and parameter name
-                                            dataRow.AppendChild(CreateCell(filename));
-                                            dataRow.AppendChild(CreateCell(param.Definition.Name));
+                                        // Add parameter group safely
+                                        string paramGroup = "Other";
+                                        try
+                                        {
+                                            paramGroup = param.Definition.ParameterGroup.ToString();
+                                        }
+                                        catch { }
+                                        dataRow.AppendChild(CreateCell(paramGroup));
 
-                                            // Add storage type safely
-                                            string storageType = "Unknown";
-                                            try
+                                        // Add is shared and GUID
+                                        dataRow.AppendChild(CreateCell(param.IsShared.ToString()));
+                                        dataRow.AppendChild(CreateCell(param.IsShared ? param.GUID.ToString() : "N/A"));
+
+                                        // Add instance/type info
+                                        dataRow.AppendChild(CreateCell(param.IsInstance.ToString()));
+
+                                        // Add formula/value - only get from current type to avoid duplicates
+                                        string value = "None";
+                                        try
+                                        {
+                                            if (famMan.CurrentType != null)
                                             {
-                                                storageType = param.StorageType.ToString();
+                                                var paramValue = famMan.CurrentType.AsValueString(param);
+                                                value = paramValue ?? "None";
                                             }
-                                            catch { }
-                                            dataRow.AppendChild(CreateCell(storageType));
-
-                                            // Add parameter group safely
-                                            string paramGroup = "Other";
-                                            try
+                                            else if (famMan.Types.Size > 0)
                                             {
-                                                paramGroup = param.Definition.ParameterGroup.ToString();
-                                            }
-                                            catch { }
-                                            dataRow.AppendChild(CreateCell(paramGroup));
-
-                                            // Add is shared and GUID
-                                            dataRow.AppendChild(CreateCell(param.IsShared.ToString()));
-                                            dataRow.AppendChild(CreateCell(param.IsShared ? param.GUID.ToString() : "N/A"));
-
-                                            // Add instance/type info
-                                            dataRow.AppendChild(CreateCell(param.IsInstance.ToString()));
-
-                                            // Add formula if any
-                                            string value = "None";
-                                            try
-                                            {
-                                                if (famMan.CurrentType != null)
+                                                // Use the first type if no current type
+                                                var firstType = famMan.Types.Cast<FamilyType>().FirstOrDefault();
+                                                if (firstType != null)
                                                 {
-                                                    var paramValue = famMan.CurrentType.AsValueString(param);
+                                                    var paramValue = firstType.AsValueString(param);
                                                     value = paramValue ?? "None";
                                                 }
                                             }
-                                            catch
-                                            {
-                                                value = "None";
-                                            }
-                                            dataRow.AppendChild(CreateCell(value));
-
-                                            sheetData.AppendChild(dataRow);
                                         }
-                                        processedFiles++;
+                                        catch
+                                        {
+                                            value = "None";
+                                        }
+                                        dataRow.AppendChild(CreateCell(value));
+
+                                        sheetData.AppendChild(dataRow);
                                     }
+                                    processedFiles++;
                                 }
-                                catch (Exception ex)
+                            }
+                            catch (Exception ex)
+                            {
+                                skippedFiles++;
+                                System.Diagnostics.Debug.WriteLine($"Error processing {file}: {ex.Message}");
+                                continue;
+                            }
+                            finally
+                            {
+                                if (familyDoc != null)
                                 {
-                                    skippedFiles++;
-                                    continue;
-                                }
-                                finally
-                                {
-                                    if (familyDoc != null)
-                                    {
-                                        familyDoc.Close(false);
-                                        Forms.Application.DoEvents();
-                                    }
+                                    familyDoc.Close(false);
+                                    familyDoc = null;
+                                    Forms.Application.DoEvents();
                                 }
                             }
                         }
@@ -293,8 +318,10 @@ namespace CodingReboot
                 }
             }
         }
+    
+
         internal static PushButtonData GetButtonData()
-        {
+       {
             // use this method to define the properties for this command in the Revit ribbon
             string buttonInternalName = "RFamilies_SParameterstoExcel";
             string buttonTitle = "Dim Detective - rooms";
